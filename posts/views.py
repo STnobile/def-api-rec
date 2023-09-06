@@ -4,9 +4,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Post
 from .serializers import PostSerializer
-from drf_api.permission import IsOwnerOrReadOnly
+from drf_api.permissions import IsOwnerOrReadOnly
 
-# Create your views here.
+
 class PostList(APIView):
     serializer_class = PostSerializer
     permission_classes = [
@@ -49,7 +49,7 @@ class PostDetail(APIView):
     def get(self, request, pk):
         post = self.get_object(pk)
         serializer = PostSerializer(
-            post, context={'request' : request}
+            post, context={'request': request}
         )
         return Response(serializer.data)
 

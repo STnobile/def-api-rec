@@ -4,7 +4,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Profile
 from .serializers import ProfileSerializer
-from drf_api.permission import IsOwnerOrReadOnly
+from drf_api.permissions import IsOwnerOrReadOnly
+
 
 class ProfileList(APIView):
     """
@@ -20,6 +21,9 @@ class ProfileList(APIView):
 
 
 class ProfileDetail(APIView):
+    """
+    Retrieve a profile or edit it if you own it
+    """
     serializer_class = ProfileSerializer
     permission_classes = [IsOwnerOrReadOnly]
 
