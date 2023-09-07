@@ -3,6 +3,7 @@
         "allauth",
         "authtoken",
         "cloudinary",
+        "corsheaders",
         "socialaccount"
     ]
 }
