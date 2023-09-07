@@ -1,5 +1,8 @@
 {
     "cSpell.words": [
-        "cloudinary"
+        "allauth",
+        "authtoken",
+        "cloudinary",
+        "socialaccount"
     ]
 }
