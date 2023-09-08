@@ -4,6 +4,8 @@
         "authtoken",
         "cloudinary",
         "corsheaders",
+        "herokuapp",
+        "recc",
         "socialaccount"
     ]
 }
