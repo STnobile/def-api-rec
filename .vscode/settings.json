@@ -4,6 +4,7 @@
         "authtoken",
         "cloudinary",
         "corsheaders",
+        "filterset",
         "herokuapp",
         "recc",
         "socialaccount",
