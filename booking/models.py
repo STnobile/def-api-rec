@@ -10,8 +10,16 @@ class Booking(models.Model):
         ('4:00 pm - 5:30 pm', '4:00 pm - 5:30 pm'),
         ('6:00 pm - 7:30 pm', '6:00 pm - 7:30 pm'),
     ])
-    max_capacity = models.PositiveIntegerField(default=17)
+    max_capacity = 17
     current_capacity = models.PositiveIntegerField(default=0)
+    booked_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"Booking on {self.date} at {self.time_slot}"
+
+
+
+
+
+
+
