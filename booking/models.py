@@ -10,6 +10,7 @@ class Booking(models.Model):
         ('4:00 pm - 5:30 pm', '4:00 pm - 5:30 pm'),
         ('6:00 pm - 7:30 pm', '6:00 pm - 7:30 pm'),
     ])
+    num_people = models.PositiveIntegerField(default=1)
     max_capacity = 17
     current_capacity = models.PositiveIntegerField(default=0)
     booked_count = models.PositiveIntegerField(default=0)
