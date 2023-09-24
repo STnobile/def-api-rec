@@ -1,5 +1,6 @@
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
+from django.db.models import Sum
 from .models import Booking
 from .serializers import BookingSerializer
 
@@ -12,7 +13,12 @@ class BookingListCreateView(generics.ListCreateAPIView):
         # Extract data from the request
         date = request.data['date']
         time_slot = request.data['time_slot']
-        num_of_people = request.data['num_of_people']
+        num_of_people = int(request.data['num_of_people'])  # Convert num_of_people to an integer
+
+        # Check if the current_capacity exceeds the max_capacity (28)
+        existing_capacity = Booking.objects.filter(date=date, time_slot=time_slot).aggregate(Sum('num_of_people'))['num_of_people__sum']
+        if existing_capacity is not None and existing_capacity + num_of_people > 28:
+            return Response({'error': 'Maximum capacity reached for this time slot.'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Create a new booking
         new_booking = Booking.objects.create(date=date, time_slot=time_slot, num_of_people=num_of_people)
@@ -23,17 +29,6 @@ class BookingListCreateView(generics.ListCreateAPIView):
         # Serialize the created booking
         serializer = self.get_serializer(new_booking)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
-
-
-
-
-
-
-
-
-
 
 
 
