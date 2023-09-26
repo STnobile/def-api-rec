@@ -11,7 +11,7 @@ class Profile(models.Model):
     content = models.TextField(blank=True)
     image = models.ImageField(
         upload_to='images/',
-        default='../dfl_profile_fscfzo', 
+        default='../default_prof_wfmwmp', 
         blank=True
     )
 

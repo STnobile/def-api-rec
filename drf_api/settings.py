@@ -63,7 +63,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
    os.environ.get('ALLOWED_HOST'),
    'localhost',
-   '8000-stnobile-defapirec-lx0zvx51m5g.ws-eu104.gitpod.io',
+   '8000-stnobile-defapirec-lx0zvx51m5g.ws-eu105.gitpod.io',
 ]
 
 if 'CLIENT_ORIGIN' in os.environ:
