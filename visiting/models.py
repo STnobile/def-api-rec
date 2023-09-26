@@ -10,12 +10,15 @@ class Booking(models.Model):
     
     # Fields for booking
     date = models.DateField()
-    time_slot = models.PositiveSmallIntegerField(
+    
+    # Changed time_slot to CharField
+    time_slot = models.CharField(
+        max_length=50,
         choices=[
-            (1, '10:00 am - 11:30 am'),
-            (2, '12:00 pm - 1:30 pm'),
-            (3, '4:00 pm - 5:30 pm'),
-            (4, '6:00 pm - 7:30 pm'),
+            ('10:00 am - 11:30 am', '10:00 am - 11:30 am'),
+            ('12:00 pm - 1:30 pm', '12:00 pm - 1:30 pm'),
+            ('4:00 pm - 5:30 pm', '4:00 pm - 5:30 pm'),
+            ('6:00 pm - 7:30 pm', '6:00 pm - 7:30 pm'),
         ]
     )
     max_capacity = models.PositiveIntegerField(default=28)
@@ -26,7 +29,7 @@ class Booking(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Booking by {self.owner.username} on {self.date} at {self.get_time_slot_display()}"
+        return f"Booking by {self.owner.username} on {self.date} at {self.time_slot}"
 
     def get_current_capacity(self):
         total_num_of_people = Booking.objects.filter(
