@@ -6,9 +6,11 @@ from .serializers import BookingSerializer
 from .permissions import IsOwnerOrReadOnly
 
 class BookingListCreateView(generics.ListCreateAPIView):
-    queryset = Booking.objects.all().order_by('date', 'time_slot')
     serializer_class = BookingSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
+
+    def get_queryset(self):
+        return Booking.objects.filter(owner=self.request.user).order_by('date', 'time_slot')
 
     def create(self, request, *args, **kwargs):
         # Extract data from the request
@@ -52,3 +54,4 @@ class BookingDetailView(generics.RetrieveUpdateDestroyAPIView):
 
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
