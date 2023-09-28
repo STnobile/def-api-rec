@@ -1,39 +1,73 @@
 ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 
 Welcome,
+ def-api-rec
+ - Description
+def-api-rec is a RESTful API designed to facilitate user interactions within a social platform. Users can book events, create and comment on posts, manage followers, and like posts. The API ensures that users can only modify their own posts, comments, bookings, and likes.
 
-This is the Code Institute student template for Codeanywhere. If you are using Gitpod then you need [this template](https://github.com/Code-Institute-Org/gitpod-full-template) instead.  We have preinstalled all of the tools you need to get started. It's perfectly ok to use this template as the basis for your project submissions.
+## Features
+ - Booking System: Users can create, update, or delete their 
+   bookings.
+ - Comments: Users can add comments to posts, edit their  
+    comments, or delete them.
+ - Posts: Users can create posts with images, titles, and  
+    content, as well as edit or delete them.
+ - Followers: Users can follow or unfollow other users.
+ - Likes: Users can like or unlike posts.
+ - Authentication: Ensures that a user can only modify their own 
+     resources.
+## Endpoints
+ - Root: path('', root_route)
+ - Admin: path('admin/', admin.site.urls)
+ - API Authentication: path('api-auth/', include('rest_framework. 
+   urls'))
+ - Logout: path('dj-rest-auth/logout/', logout_route)
+ - Authentication routes: path('dj-rest-auth/', include(. 
+     'dj_rest_auth.urls'))
+ - Registration: path('dj-rest-auth/registration/', include. 
+    ('dj_rest_auth.registration.urls'))
+ - Profiles: path('', include('profiles.urls'))
+ - Posts: path('', include('posts.urls'))
+ - Comments: path('', include('comments.urls'))
+ - Likes: path('', include('likes.urls'))
+ - Followers: path('', include('followers.urls'))
+ - Visits: path('', include('visiting.urls'))
+ - Technologies Used
+ - Django
+ - Django Rest Framework
+ - Django Allauth
+ - Django Cloudinary Storage
+ - Django CORS Headers
+ - Django Filter
+ - Django Rest Auth
+ - Cloudinary
+ - PostgreSQL
 
-You can safely delete this README.md file, or change it for your own project. Please do read it at least once, though! It contains some important information about Codeanywhere and the extensions we use. Some of this information has been updated since the video content was created. The last update to this file was: **August 30th, 2023**
 
-## Codeanywhere Reminders
+## Installation
 
-To run a frontend (HTML, CSS, Javascript only) application in Codeanywhere, in the terminal, type:
+To install the necessary packages, run:
+ requirements.txt
 
-`python3 -m http.server`
 
-A button should appear to click: _Open Preview_ or _Open Browser_.
+# Authentication
+Default user credentials for testing:
 
-To run a frontend (HTML, CSS, Javascript only) application in Codeanywhere with no-cache, you can use this alias for `python3 -m http.server`.
+- Username: test
+- Password: test
 
-`http_server`
 
-To run a backend Python file, type `python3 app.py`, if your Python file is named `app.py` of course.
-
-A button should appear to click: _Open Preview_ or _Open Browser_.
-
-In Codeanywhere you have superuser security privileges by default. Therefore you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the lessons.
-
-To log into the Heroku toolbelt CLI:
-
-1. Log in to your Heroku account and go to _Account Settings_ in the menu under your avatar.
-2. Scroll down to the _API Key_ and click _Reveal_
-3. Copy the key
-4. In Codeanywhere, from the terminal, run `heroku_config`
-5. Paste in your API key when asked
-
-You can now use the `heroku` CLI program - try running `heroku apps` to confirm it works. This API key is unique and private to you so do not share it. If you accidentally make it public then you can create a new one with _Regenerate API Key_.
-
----
-
-Happy coding!
+# Deployment Guide
+- <u>Heroku Authentication:</u> Use the Heroku CLI to log in to your 
+   account.
+- <u>Project Directory:</u> Navigate to the def-api-rec project's root.
+- <u>Git Initialization:</u> If you haven't already, set up a Git repository and commit your project.
+- <u>Heroku App Creation:</u> Using the CLI, create a new Heroku app.
+You can provide a unique name or let Heroku auto-generate one 
+ for you.
+- <u>Environment Variables:</u> Configure necessary environment variables for your project (e.g., DJANGO_SECRET_KEY) via the Heroku dashboard or CLI.
+- <u>PostgreSQL Integration:</u> Add a PostgreSQL database to your Heroku app. Heroku offers a free-tier database which can be attached via the Heroku dashboard.
+- <u>Django Settings:</u> Modify your settings.py to recognize the DATABASE_URL provided by Heroku and use the dj_database_url library to parse it.
+- <u>Heroku Deployment:</u> Push your application code to Heroku using Git.
+- <u>Database Migration:</u> Migrate your database schema using the Heroku CLI.
+- <u>Access Application:</u> Open your app's URL in a browser or use the heroku open command to view it.
