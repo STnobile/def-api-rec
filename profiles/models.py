@@ -7,13 +7,16 @@ class Profile(models.Model):
     owner = models.OneToOneField(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    first_name = models.CharField(max_length=255, blank=True)
+    last_name = models.CharField(max_length=250, blank=True)
     name = models.CharField(max_length=255, blank=True)
-    content = models.TextField(blank=True)
+    content = models.TextField(blank=True, max_length=255)
     image = models.ImageField(
         upload_to='images/',
         default='../default_prof_wfmwmp', 
         blank=True
     )
+    location = models.CharField(max_length=255, blank=True)
 
     class Meta:
         ordering = ['-created_at']

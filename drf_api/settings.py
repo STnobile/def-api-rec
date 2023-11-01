@@ -25,21 +25,21 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [(
-        'rest_framework.authentication.SessionAuthentication'
-        if 'DEV' in os.environ
-        else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
-    )],
-    'DEFAULT_PAGINATION_CLASS':
-        'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
-    'DATETIME_FORMAT': '%d %b %Y',
-}
-if 'DEV' not in os.environ:
-    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = [
-        'rest_framework.renderers.JSONRenderer',
-    ]
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': [(
+#         'rest_framework.authentication.SessionAuthentication'
+#         if 'DEV' in os.environ
+#         else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+#     )],
+#     'DEFAULT_PAGINATION_CLASS':
+#         'rest_framework.pagination.PageNumberPagination',
+#     'PAGE_SIZE': 10,
+#     'DATETIME_FORMAT': '%d %b %Y',
+# }
+# if 'DEV' not in os.environ:
+#     REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = [
+#         'rest_framework.renderers.JSONRenderer',
+#     ]
 
 REST_USE_JWT = True
 JWT_AUTH_SECURE = True
@@ -58,12 +58,12 @@ REST_AUTH_SERIALIZERS = {
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
    os.environ.get('ALLOWED_HOST'),
    'localhost',
-   '8000-stnobile-defapirec-lx0zvx51m5g.ws-eu104.gitpod.io',
+   '8000-stnobile-defapirec-lx0zvx51m5g.ws-eu105.gitpod.io',
 ]
 
 if 'CLIENT_ORIGIN' in os.environ:
@@ -107,6 +107,7 @@ INSTALLED_APPS = [
     'likes',
     'followers',
     'visiting',
+    'notifications',
 ]
 SITE_ID = 1
 MIDDLEWARE = [
@@ -147,14 +148,14 @@ WSGI_APPLICATION = 'drf_api.wsgi.application'
 
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     } if 'DEV' in os.environ else dj_database_url.parse(
-#         os.environ.get('DATABASE_URL')
-#     )
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    } if 'DEV' in os.environ else dj_database_url.parse(
+        os.environ.get('DATABASE_URL')
+    )
+}
 
 DATABASES = {'default':dj_database_url.parse(os.environ.get('DATABASE_URL'))}
 

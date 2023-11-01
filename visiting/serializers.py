@@ -7,17 +7,17 @@ class BookingSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
+        booking = super().create(validated_data)
+        
         # Update the current capacity when creating a booking
-        booking = Booking.objects.create(**validated_data)
-        booking.current_capacity += 1
-        booking.save()
+        booking.update_current_capacity()
+        
         return booking
 
     def update(self, instance, validated_data):
+        instance = super().update(instance, validated_data)
+        
         # Update the current capacity when updating a booking
-        instance.date = validated_data.get('date', instance.date)
-        instance.time_slot = validated_data.get('time_slot', instance.time_slot)
-        instance.max_capacity = validated_data.get('max_capacity', instance.max_capacity)
-        instance.current_capacity = validated_data.get('current_capacity', instance.current_capacity)
-        instance.save()
+        instance.update_current_capacity()
+        
         return instance

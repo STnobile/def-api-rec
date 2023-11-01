@@ -4,13 +4,19 @@ from django.contrib.auth.models import User
 
 class Booking(models.Model):
     owner = models.ForeignKey(User, related_name='bookings', on_delete=models.CASCADE)
-    
-    # Post can be a comment or description about the booking
-    post = models.TextField(blank=True, null=True) 
-    
+     
     # Fields for booking
     date = models.DateField()
-    
+
+
+    TOUR_SECTIONS = [
+        ('Museum', 'Museum'),
+        ('Photos Gallery', 'Photos Gallery'),
+        ('Underground Wine tanks', 'Under Ground Wine tanks'),
+        ('Private Garden', 'Private Garden'),
+    ]
+    section = models.CharField(max_length=100, choices=TOUR_SECTIONS, default='Choose here!')
+
     # Changed time_slot to CharField
     time_slot = models.CharField(
         max_length=50,
@@ -21,6 +27,8 @@ class Booking(models.Model):
             ('6:00 pm - 7:30 pm', '6:00 pm - 7:30 pm'),
         ]
     )
+    
+    
     max_capacity = models.PositiveIntegerField(default=28)
     num_of_people = models.PositiveIntegerField(default=1)
     current_capacity = models.PositiveIntegerField(default=0)
@@ -29,11 +37,11 @@ class Booking(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Booking by {self.owner.username} on {self.date} at {self.time_slot}"
+        return f"Booking by {self.owner.username} for {self.section} on {self.date} at {self.time_slot}"
 
     def get_current_capacity(self):
         total_num_of_people = Booking.objects.filter(
-            date=self.date, time_slot=self.time_slot
+            date=self.date, time_slot=self.time_slot, section=self.section
         ).aggregate(total=Sum('num_of_people'))['total'] or 0
         return total_num_of_people
 
