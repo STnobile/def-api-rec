@@ -4,20 +4,17 @@ from django.contrib.auth.models import User
 
 class Booking(models.Model):
     owner = models.ForeignKey(User, related_name='bookings', on_delete=models.CASCADE)
-     
+    
     # Fields for booking
     date = models.DateField()
-
-
     TOUR_SECTIONS = [
         ('Museum', 'Museum'),
         ('Photos Gallery', 'Photos Gallery'),
-        ('Underground Wine tanks', 'Under Ground Wine tanks'),
+        ('Underground Wine tanks', 'Underground Wine tanks'),
         ('Private Garden', 'Private Garden'),
     ]
-    section = models.CharField(max_length=100, choices=TOUR_SECTIONS, default='Choose here!')
-
-    # Changed time_slot to CharField
+    section = models.CharField(max_length=100, choices=TOUR_SECTIONS)
+    
     time_slot = models.CharField(
         max_length=50,
         choices=[
@@ -27,7 +24,6 @@ class Booking(models.Model):
             ('6:00 pm - 7:30 pm', '6:00 pm - 7:30 pm'),
         ]
     )
-    
     
     max_capacity = models.PositiveIntegerField(default=28)
     num_of_people = models.PositiveIntegerField(default=1)
@@ -46,6 +42,6 @@ class Booking(models.Model):
         return total_num_of_people
 
     def update_current_capacity(self):
-        # Note the change here: We're using the method instead of the property
+        # This can be kept if you decide to reintroduce the `current_capacity` field.
         self.current_capacity = self.get_current_capacity()
         self.save()
