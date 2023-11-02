@@ -10,15 +10,15 @@ class BookingListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
 
     def get_queryset(self):
-        return Booking.objects.filter(owner=self.request.user).order_by('date', 'time_slot', 'section')
+        return Booking.objects.filter(owner=self.request.user).order_by('date', 'time_slot', 'tour_section')
 
     def create(self, request, *args, **kwargs):
         date = request.data['date']
         time_slot = request.data['time_slot']
-        section = request.data['section']
+        tour_section = request.data['tour_section']
         num_of_people = int(request.data['num_of_people'])
 
-        existing_capacity = Booking.objects.filter(date=date, time_slot=time_slot, section=section).aggregate(Sum('num_of_people'))['num_of_people__sum'] or 0
+        existing_capacity = Booking.objects.filter(date=date, time_slot=time_slot, tour_section=tour_section).aggregate(Sum('num_of_people'))['num_of_people__sum'] or 0
         if existing_capacity + num_of_people > 28:
             return Response({'error': 'Maximum capacity reached for this time slot in the selected section.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -26,7 +26,7 @@ class BookingListCreateView(generics.ListCreateAPIView):
             owner=request.user,
             date=date,
             time_slot=time_slot,
-            section=section,
+            tour_section=tour_section,
             num_of_people=num_of_people
         )
 

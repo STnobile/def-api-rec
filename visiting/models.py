@@ -13,7 +13,8 @@ class Booking(models.Model):
         ('Underground Wine tanks', 'Underground Wine tanks'),
         ('Private Garden', 'Private Garden'),
     ]
-    section = models.CharField(max_length=100, choices=TOUR_SECTIONS, default='Museum')
+
+    tour_section = models.CharField(max_length=100, choices=TOUR_SECTIONS, default='Museum')
     
     time_slot = models.CharField(
         max_length=50,
@@ -37,7 +38,7 @@ class Booking(models.Model):
 
     def get_current_capacity(self):
         total_num_of_people = Booking.objects.filter(
-            date=self.date, time_slot=self.time_slot, section=self.section
+            date=self.date, time_slot=self.time_slot, tour_section=self.tour_section
         ).aggregate(total=Sum('num_of_people'))['total'] or 0
         return total_num_of_people
 
