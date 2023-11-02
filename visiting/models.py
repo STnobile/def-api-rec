@@ -13,7 +13,7 @@ class Booking(models.Model):
         ('Underground Wine tanks', 'Underground Wine tanks'),
         ('Private Garden', 'Private Garden'),
     ]
-    section = models.CharField(max_length=100, choices=TOUR_SECTIONS)
+    section = models.CharField(max_length=100, choices=TOUR_SECTIONS, default='Museum')
     
     time_slot = models.CharField(
         max_length=50,
