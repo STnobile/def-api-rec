@@ -13,10 +13,16 @@ class BookingListCreateView(generics.ListCreateAPIView):
         return Booking.objects.filter(owner=self.request.user).order_by('date', 'time_slot', 'tour_section')
 
     def create(self, request, *args, **kwargs):
-        date = request.data['date']
-        time_slot = request.data['time_slot']
-        tour_section = request.data['tour_section']
-        num_of_people = int(request.data['num_of_people'])
+        
+        date = request.data.get('date')
+        time_slot = request.data.get('time_slot')
+        tour_section = request.data.get('tour_section')
+        num_of_people = request.data.get('num_of_people')
+
+        if not all([date, time_slot, tour_section, num_of_people]):
+         return Response({'error': 'All fields are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        num_of_people = int(num_of_people)
 
         existing_capacity = Booking.objects.filter(date=date, time_slot=time_slot, tour_section=tour_section).aggregate(Sum('num_of_people'))['num_of_people__sum'] or 0
         if existing_capacity + num_of_people > 28:
@@ -35,6 +41,9 @@ class BookingListCreateView(generics.ListCreateAPIView):
 
         serializer = self.get_serializer(new_booking)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+
 class BookingDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
