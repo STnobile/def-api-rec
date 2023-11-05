@@ -13,11 +13,14 @@ class BookingListCreateView(generics.ListCreateAPIView):
         return Booking.objects.filter(owner=self.request.user).order_by('date', 'time_slot', 'tour_section')
 
     def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
         
-        date = request.data.get('date')
-        time_slot = request.data.get('time_slot')
-        tour_section = request.data.get('tour_section')
-        num_of_people = request.data.get('num_of_people')
+        # Now the data is validated, you can access validated_data
+        date = serializer.validated_data['date']
+        time_slot = serializer.validated_data['time_slot']
+        tour_section = serializer.validated_data['tour_section']
+        num_of_people = serializer.validated_data['num_of_people']
 
         if not all([date, time_slot, tour_section, num_of_people]):
          return Response({'error': 'All fields are required.'}, status=status.HTTP_400_BAD_REQUEST)
