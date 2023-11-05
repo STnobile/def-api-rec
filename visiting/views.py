@@ -13,16 +13,25 @@ class BookingListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         return Booking.objects.filter(owner=self.request.user).order_by('date', 'time_slot', 'tour_section')
 
+
     def create(self, request, *args, **kwargs):
-        date = request.data.get('date')
-        time_slot = request.data.get('time_slot')
-        tour_section = request.data.get('tour_section')
-        num_of_people = request.data.get('num_of_people')
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-        if not all([date, time_slot, tour_section, num_of_people]):
-          return Response({'error': 'All fields are required.'}, status=status.HTTP_400_BAD_REQUEST)
+        num_of_people = serializer.validated_data['num_of_people']
+        existing_capacity = Booking.objects.filter(
+            date=serializer.validated_data['date'],
+            time_slot=serializer.validated_data['time_slot'],
+            tour_section=serializer.validated_data['tour_section']
+        ).aggregate(Sum('num_of_people'))['num_of_people__sum'] or 0
 
-        num_of_people = int(num_of_people)
+        if existing_capacity + num_of_people > 28:
+            return Response({'error': 'Maximum capacity reached for this time slot in the selected section.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        new_booking = serializer.save(owner=request.user)
+        new_booking.update_current_capacity()
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         existing_capacity = Booking.objects.filter(date=date, time_slot=time_slot, tour_section=tour_section).aggregate(
             Sum('num_of_people'))['num_of_people__sum'] or 0
@@ -75,6 +84,8 @@ class BookingDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        self.perform_destroy(instance)
+        # Call update_current_capacity before destroying the instance
         instance.update_current_capacity()
+        self.perform_destroy(instance)
+        # Do not call any method on the instance after it has been deleted
         return Response(status=status.HTTP_204_NO_CONTENT)
