@@ -63,5 +63,5 @@ class BookingDetailView(generics.RetrieveUpdateDestroyAPIView):
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
-        instance.update_current_capacity()
+        # instance.update_current_capacity()
         return Response(status=status.HTTP_204_NO_CONTENT)
