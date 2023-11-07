@@ -10,8 +10,8 @@ class PostListViewTests(APITestCase):
 
     def test_can_list_posts(self):
        # step = User.objects.get(username='step')
-        Post.objects.create(owner=self.user.id, title='a title')
-        response = self.client.get('/posts')
+        Post.objects.create(owner=self.user, title='a title')
+        response = self.client.get('/posts/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         print(response.data)
         print(len(response.data))
