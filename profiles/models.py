@@ -16,7 +16,7 @@ class Profile(models.Model):
         default='../default_prof_wfmwmp', 
         blank=True
     )
-    location = models.CharField(max_length=255, blank=True)
+    email = models.CharField(max_length=255, blank=True)
 
     class Meta:
         ordering = ['-created_at']
