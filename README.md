@@ -16,6 +16,8 @@ def-api-rec is a RESTful API designed to facilitate user interactions within a s
  - Likes: Users can like or unlike posts.
  - Authentication: Ensures that a user can only modify their own 
      resources.
+
+     
 ## Endpoints
  - Root: path('', root_route)
  - Admin: path('admin/', admin.site.urls)
@@ -44,21 +46,63 @@ def-api-rec is a RESTful API designed to facilitate user interactions within a s
  - PostgreSQL
 
 
+
 ## Installation
 
 To install the necessary packages, run:
  requirements.txt
 
+## Models and CRUD breakdown
+| model     | endpoints                    | create        | retrieve | update | delete | filter                   | text search |
+| --------- | ---------------------------- | ------------- | -------- | ------ | ------ | ------------------------ | ----------- |
+| users     | users/<br>users/:id/         | yes           | yes      | yes    | no     | no                       | no          |
+| profiles  | profiles/<br>profiles/:id/   | yes (signals) | yes      | yes    | no     | following<br>followed    | name        |
+| likes     | likes/<br>likes/:id/         | yes           | yes      | no     | yes    | no                       | no          |
+| comments  | comments/<br>comments/:id/   | yes           | yes      | yes    | yes    | post                     | no          |
+| followers | followers/<br>followers/:id/ | yes           | yes      | no     | yes    | no                       | no          |
+| posts     | posts/<br>posts/:id/         | yes           | yes      | yes    | yes    | profile<br>liked<br>feed | title       |
+| visiting  | visiting/<int:pk>/'.         | yes           | yes      | yes    | yes    |  visiting               | title       |
 
-# Authentication
-Default user credentials for testing:
 
-- Username: test
-- Password: test
+
+
 
 ## Testing
+- Posts app:
+    - logged out users can list posts
+    - logged in users can create a post
+    - logged out users can't create a post
+    - logged out users can retrieve a post with a valid id
+    - logged out users can't retrieve a post with an invalid id
+    - logged in users can update a post they own
+    - logged in users can't update a post they don't own
 
 
+- Comments app:
+    - logged out users can list comment
+    - logged in users can create a comment
+    - logged out users can't create a comment
+    - logged out users can retrieve a comment with a valid id
+    - logged out users can't retrieve a comment with an invalid id
+    - logged in users can update a comment they own
+    - logged in users can't update a comment they don't own
+
+- Like app:
+    - logged out users can't list a like
+    - logged in users can create a like
+    - logged out users can't create a like
+    - logged out users can retrieve a like with a valid id
+    - logged out users can't retrieve a like with an invalid id
+    - logged in users can update a like they own
+    - logged in users can't update a like they don't own
+
+- Visiting app:
+    - logged out users can't list a visit (booking)
+    - logged in users can create a visit (booking)
+    - logged out users can't create a visit (booking)
+    - logged out users can retrieve a visit with a valid id
+    - logged out users can't retrieve a visit with an invalid id
+    
 
 # Deployment Guide
 - <u>Heroku Authentication:</u> Use the Heroku CLI to log in to your 
@@ -74,3 +118,26 @@ You can provide a unique name or let Heroku auto-generate one
 - <u>Heroku Deployment:</u> Push your application code to Heroku using Git.
 - <u>Database Migration:</u> Migrate your database schema using the Heroku CLI.
 - <u>Access Application:</u> Open your app's URL in a browser or use the heroku open command to view it.
+
+
+## Deployment steps
+
+* set the following environment variables:
+  - CLIENT_ORIGIN
+  - CLOUDINARY_URL
+  - DATABASE_URL
+  - DISABLE_COLLECTSTATIC
+   -  SECRET_KEY
+
+* installed the following libraries to handle database connection:
+  - psycopg2
+  - dj-database-url
+* configured dj-rest-auth library for JWTs
+* set allowed hosts
+* configured CORS:
+  - set allowed_origins
+* set default renderer to JSON
+* added Procfile with release and web commands
+* gitignored the env.py file
+* generated requirements.txt
+* deployed to Heroku
