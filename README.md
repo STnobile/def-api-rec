@@ -1,6 +1,6 @@
 ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 
-![Api ](../def-api-rec/documentation/api.png)
+![Api](/documentation/api.png)
 
 Welcome,
  def-api-rec
@@ -66,7 +66,7 @@ To install the necessary packages, run:
 | posts     | posts/<br>posts/:id/         | yes           | yes      | yes    | yes    | profile<br>liked<br>feed | title       |
 | visiting  | visiting/< int:pk >/'         | yes           | yes      | yes    | yes    | visiting                 | title       |
 
-![Agile ](../def-api-rec/documentation/agile.png)
+![Agile](/documentation/agile.png)
 
 ### Scope (backend)
 Our scope for this project is small and aims to cover the basic functionality of what a social media application needs. The project would be further developed upon post-production.
@@ -182,7 +182,7 @@ The API's main features within this app are CRUD based. ie. Create, Read, Update
     - logged out users can't retrieve a visit with an invalid id
 
 
-![Testing](../def-api-rec/documentation/test.png)
+![Testing](/documentation/test.png)
     
 ## Project backend Goal 
 The goal of the backend API is to create a fully functional API which supplies data for a frontend react app. The admins will be able to post, update and delete posts/comments/likes/bookmarks and follows within the development environment of the API (when debug is set to True). Outside of the development environment, Users will be able to do the same from the frontend react app accessing the API which serves JSON data directly to the frontend.
