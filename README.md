@@ -1,5 +1,7 @@
 ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 
+![Api ](../def-api-rec/documentation/api.png)
+
 Welcome,
  def-api-rec
  - Description
@@ -52,6 +54,7 @@ def-api-rec is a RESTful API designed to facilitate user interactions within a s
 To install the necessary packages, run:
  requirements.txt
 
+
 ## Models and CRUD breakdown
 | model     | endpoints                    | create        | retrieve | update | delete | filter                   | text search |
 | --------- | ---------------------------- | ------------- | -------- | ------ | ------ | ------------------------ | ----------- |
@@ -61,10 +64,85 @@ To install the necessary packages, run:
 | comments  | comments/<br>comments/:id/   | yes           | yes      | yes    | yes    | post                     | no          |
 | followers | followers/<br>followers/:id/ | yes           | yes      | no     | yes    | no                       | no          |
 | posts     | posts/<br>posts/:id/         | yes           | yes      | yes    | yes    | profile<br>liked<br>feed | title       |
-| visiting  | visiting/<int:pk>/'.         | yes           | yes      | yes    | yes    |  visiting               | title       |
+| visiting  | visiting/< int:pk >/'         | yes           | yes      | yes    | yes    | visiting                 | title       |
+
+![Agile ](../def-api-rec/documentation/agile.png)
+
+### Scope (backend)
+Our scope for this project is small and aims to cover the basic functionality of what a social media application needs. The project would be further developed upon post-production.
+
+The API will have appropriate apps to fulfil the following tasks:
+- CRUD functionality on Posts 
+- CRUD functionality on Comments 
+- Create, Read and Delete functionality on Likes 
+- Create, Read and Delete functionality on Followers 
+- Create, Read and Delete functionality on Bookmarks 
+- Create functionality on Contact Us form.
 
 
+### Structure (backend) 
+The structure of the API needed to be organized, so we could make sure that all the relationships between the models could be mapped before coding. Below in the section, you can see the relationships between the models with the arrows.
 
+- Post Model
+    - owner (User, on_delete=models.CASCADE)
+    - title - max length 100 characters
+    - content - text field
+    - image - image field, default post image if user doesn't add image
+    - created_at - datetime field
+    - updated_at - datetime field
+- Profile Model
+    - owner (Foreign Key - from User model)
+    - first_name - max length 255 characters
+    - last_name - max length 255 characters
+    - email - max length 255 characters
+    - created_at - datetime field
+    - updated_at - datetime field
+    - name - max length 250 characters
+    - bio - text field
+    - image - image field, default post image if user doesn't add image
+- Comment Model
+    - owner (Foreign Key - from User model)
+    - post (Foreign Key - from Post Model)
+    - content - text field
+    - created_at - datetime field
+    - updated_at - datetime field
+- Like Model
+    - owner (Foreign Key - from User model)
+    - post (Foreign Key - from Post Model)
+    - created_at - datetime field
+- Follower Model
+    - owner (Foreign Key - from User model, related_name='following')
+    - followed (Foreign Key - from User model, related_name='followed')
+    - created_at - datetime field
+- Visiting Model
+    - owner (Foreign Key - from User model)
+    - date ( Model field )
+    - tour_section (max length 100)
+    - TOUR_SECTION [Museum, Photo Gallery, Underground Wine tanks, Private Garden]
+    - time_slot (max length 50 )[10:00 am - 11:30 am,12:00 pm - 1:30 pm, 4:00 pm - 5:30 pm, 6:00 pm - 7:30 pm]
+    - max_capacity = default 28
+    - num_of_people = default 1
+    - current_capacity = default 0
+    - created_at - datetime field
+    - update_at - datetime field
+
+
+## Features Crud
+The API's main features within this app are CRUD based. ie. Create, Read, Update and Destroy. The following list shows what this API can provide through various request/post/put & delete calls.
+- Add/Edit/Delete a Post
+- Add/Edit/Delete a Comment 
+- Add/Delete a Like 
+- Add/Delete a Visiting
+- Add/Delete a Follow
+- Filter posts by title, likes and owner
+- Filter posts by owner
+- Filter posts by following 
+- Filter posts by followers 
+- Comments, Contact and Profiles are registered with read-only fields so the admin can only assess and delete any user content that is harmful.
+  - The Apps registered in the admin panel are Posts, Comments, Profiles and Visiting. 
+   - Admin login panel if you add `/admin` to the root url.
+  - Post App logic is that  the admin can Create, Read, Edit or Destroy any post on the platform.
+  - Admin Panel, so the admin can have control over the content on the website. For example, if any harmful content is posted, the Admin can remove the content and/or user profile.
 
 
 ## Testing
@@ -102,9 +180,31 @@ To install the necessary packages, run:
     - logged out users can't create a visit (booking)
     - logged out users can retrieve a visit with a valid id
     - logged out users can't retrieve a visit with an invalid id
-    
 
-# Deployment Guide
+
+![Testing](../def-api-rec/documentation/test.png)
+    
+## Project backend Goal 
+The goal of the backend API is to create a fully functional API which supplies data for a frontend react app. The admins will be able to post, update and delete posts/comments/likes/bookmarks and follows within the development environment of the API (when debug is set to True). Outside of the development environment, Users will be able to do the same from the frontend react app accessing the API which serves JSON data directly to the frontend.
+
+
+
+## Libraries Used 
+- Cloudinary - [`pip install cloudinary==1.34.0`](https://pypi.org/project/cloudinary/) - Cloud based image storage
+- Django Database Url - [`pip install dj-database-url==0.5.0`](https://pypi.org/project/dj-database-url/0.5.0/) - Supporting cloud based database management
+- Django REST Auth - [`pip install dj-rest-auth==2.1.9`](https://pypi.org/project/dj-rest-auth/2.1.9/) - Account authentication for Django REST
+- Django v.3.2 - [`pip install Django==3.2.21`](https://pypi.org/project/Django/3.2.21/) - Django Framework
+- Django AllAuth - [`pip install django-allauth==0.44.0`](https://pypi.org/project/django-allauth/0.44.0/) - Account authorization 
+- Django Cloudinary Storage - [`pip install django-cloudinary-storage==0.3.0`](https://pypi.org/project/django-cloudinary-storage/) - Supporting Cloudinary Image Storage
+- Django CORS Headers - [`pip install django-cors-headers==4.2.0`](https://pypi.org/project/django-cors-headers/) - Support Cross Origin Resource Sharing
+- Django Filter - [`pip install django-filter==23.3`](https://pypi.org/project/django-filter/) - Filtering database model fields
+- Django REST Framework - [`pip install djangorestframework==3.14.0`](https://pypi.org/project/djangorestframework/) - Django REST Framework for backend data management
+- Django REST Simple JSON Tokens - [`pip install djangorestframework-simplejwt==5.3.0`](https://pypi.org/project/djangorestframework-simplejwt/) - Encryption and decryption of JSON web tokens.
+- Gunicorn - [`pip install gunicorn==21.2.0`](https://pypi.org/project/gunicorn/) - Supporting Deployment to Heroku
+- Pillow - [`pip install Pillow==10.0.0`](https://pypi.org/project/Pillow/) - Supporting image processing 
+- Psycopg2 - [`pip install psycopg2==2.9.7`](https://pypi.org/project/psycopg2/) - Supporting Deployment to Heroku
+
+## Deployment Guide
 - <u>Heroku Authentication:</u> Use the Heroku CLI to log in to your 
    account.
 - <u>Project Directory:</u> Navigate to the def-api-rec project's root.
@@ -120,6 +220,11 @@ You can provide a unique name or let Heroku auto-generate one
 - <u>Access Application:</u> Open your app's URL in a browser or use the heroku open command to view it.
 
 
+## Technology 
+- [Cloudinary](www.cloudinary.com): For image storage
+- [ElephantSQL](www.elephantsql.com): For database storage and management
+- [Heroku](https://heroku.com): Heroku hosting platform.
+
 ## Deployment steps
 
 * set the following environment variables:
@@ -128,7 +233,6 @@ You can provide a unique name or let Heroku auto-generate one
   - DATABASE_URL
   - DISABLE_COLLECTSTATIC
    -  SECRET_KEY
-
 * installed the following libraries to handle database connection:
   - psycopg2
   - dj-database-url
