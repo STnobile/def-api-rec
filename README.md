@@ -19,6 +19,32 @@ def-api-rec is a RESTful API designed to facilitate user interactions within a s
  - Authentication: Ensures that a user can only modify their own 
      resources.
 
+
+## User stories
+
+| Category  | as       | I want to                      | so that I can                                     | mapping API feature                          |
+| --------- | -------- | ------------------------------ | --------------------------------------------------|--------------------------------------------- |
+| auth      | user     | register for an account        | have a personal profile with a picture            | dj-rest-auth<br>Create profile (signals)     |
+| auth      | user     | register for an account        | create, like and comment on posts                 | Create post<br>Create comment<br>Create like |
+| auth      | user     | register for an account        | follow users                                      | Create follower                              |
+| posts     | visitor  | view a list of posts           | browse the most recent uploads                    | List/ Filter posts                           |
+| posts     | visitor  | view an individual post        | see user feedback, i.e. likes and read comments   | Retrieve post                                |
+| posts     | visitor  | search a list of posts         | find a post by a specific artist or a title       | List/ Filter posts                           |
+| posts     | visitor  | scroll through a list of posts | browse the site more comfortably                  | List/ Filter posts                           |
+| posts     | user     | edit and delete my post        | correct or hide any mistakes                      | Update property<br>Destroy property          |
+| posts     | user     | create a post                  | share my moments with others                      | Create post                                  |
+| posts     | user     | view liked posts               | go back often to my favourite posts               | List/ Filter posts                           |
+| posts     | user     | view followed users' posts     | keep up with my favourite users' moments                           | List/ Filter posts                           |
+| likes     | user     | like a post                    | express my interest in someone's shared moment                     | Create like                                  |
+| likes     | user     | unlike a post                  | express that my interest in someone's shared moment has faded away | Destroy like                                 |
+| comments  | user     | create a comment               | share my thoughts on other people's content                        | Create comment                               |
+| comments  | user     | edit and delete my comment     | correct or hide any mistakes                                       | Update comment<br>Destroy comment            |
+| profiles  | user     | view a profile                 | see a user's recent posts + post, followers, following count data  | Retrieve profile<br>List/ filter posts       |
+| profiles  | user     | edit a profile                 | update my profile information                                      | Update profile                               |
+| followers | user     | follow a profile               | express my interest in someone's content                           | Create follower                              |
+| followers | user     | unfollow a profile | express that my interest in someone's content has faded away and remove their posts from my feed | Destroy follower           |
+| visiting  | user     | book a visit       | I can navigate the booking page so that I will be able to book a visit edit it or delete it  | Create Destroy                 |
+
      
 ## Endpoints
  - Root: path('', root_route)
@@ -46,8 +72,6 @@ def-api-rec is a RESTful API designed to facilitate user interactions within a s
  - Django Rest Auth
  - Cloudinary
  - PostgreSQL
-
-
 
 ## Installation
 
@@ -78,6 +102,7 @@ The API will have appropriate apps to fulfil the following tasks:
 - Create, Read and Delete functionality on Followers 
 - Create, Read and Delete functionality on Bookmarks 
 - Create functionality on Contact Us form.
+
 
 
 ### Structure (backend) 
@@ -125,6 +150,8 @@ The structure of the API needed to be organized, so we could make sure that all 
     - current_capacity = default 0
     - created_at - datetime field
     - update_at - datetime field
+
+    ![Api](/documentation/erd.png)
 
 
 ## Features Crud
