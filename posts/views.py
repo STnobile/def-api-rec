@@ -17,11 +17,13 @@ class PostList(generics.ListCreateAPIView):
         likes_count=Count('likes', distinct=True),
         comments_count=Count('comment', distinct=True)
     ).order_by('-created_at')
+
     filter_backends = [
         filters.OrderingFilter,
         filters.SearchFilter,
         DjangoFilterBackend,
     ]
+
     filterset_fields = [
         # user feed
         'owner__followed__owner__profile',
@@ -30,10 +32,12 @@ class PostList(generics.ListCreateAPIView):
         # user posts
         'owner__profile',
     ]
+
     search_fields = [
         'owner__username',
         'title',
     ]
+    
     ordering_fields = [ 
         'created_at', 
         'comments_count', 
