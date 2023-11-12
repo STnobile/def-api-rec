@@ -33,7 +33,7 @@ def-api-rec is a RESTful API designed to facilitate user interactions within a s
 | posts     | visitor  | scroll through a list of posts | browse the site more comfortably                  | List/ Filter posts                           |
 | posts     | user     | edit and delete my post        | correct or hide any mistakes                      | Update property<br>Destroy property          |
 | posts     | user     | create a post                  | share my moments with others                      | Create post                                  |
-| posts     | user     | view liked posts               | go back often to my favourite posts               | List/ Filter posts                           |
+| posts     | user     | view liked posts               | go back often to my favourite  posts              | List/ Filter posts                           |
 | posts     | user     | view followed users' posts     | keep up with my favourite users' moments                           | List/ Filter posts                           |
 | likes     | user     | like a post                    | express my interest in someone's shared moment                     | Create like                                  |
 | likes     | user     | unlike a post                  | express that my interest in someone's shared moment has faded away | Destroy like                                 |
@@ -272,3 +272,26 @@ You can provide a unique name or let Heroku auto-generate one
 * gitignored the env.py file
 * generated requirements.txt
 * deployed to Heroku
+ - Set up an account with Heroku, then follow these steps for deployment -
+   Create an app
+   Name the app
+   Connect the app to GitHub and find the repository.
+   Configure Variables - These are often the sensitive data variables that are needed to be kept secret from public sight. Head over to the settings tab and under the Config Vars sections, add the config vars appropriate to the app. In this case, it is ALLOWED_HOSTS, CLIENT_ORIGIN, CLOUDINARY_URL and DATABASE_URL, EMAIL_HOST_PASS, EMAIL_HOST_USER and SECRET_KEY. Note: ALLOWED_HOSTS and CLIENT_ORIGIN will be almost identical. ALLOWED_HOSTS will be the url without https:// and CLIENT_ORIGIN will have the full length url including https://, however excluding the final forward slash /
+   ![Testing](/documentation/heroku.png)
+
+
+
+# Reflection on Project Deployment Challenges and Learning
+
+
+During the deployment of my recent project, I encountered several significant challenges, particularly in the back-end development. Despite diligent efforts and numerous sessions with my mentor and tutor, a perplexing error persisted, eluding resolution. This setback necessitated a thorough review of the entire project, a step that was both time-consuming and critical.
+
+In the process of revisiting the walkthrough of the project, I was able to identify and rectify major bugs that were impeding progress. However, the back-end of the project continued to present numerous issues. The complexity of these problems was such that they demanded extensive time and attention, often at the cost of other aspects of the project, including the documentation.
+
+One of the most significant challenges was the inability to complete the README file. A comprehensive README is crucial for any project as it serves as the first point of reference for anyone trying to understand or use the project. The lack of a complete README file was a clear indication of how the back-end issues had overshadowed other important elements of the project.
+
+Through this experience, I learned several valuable lessons. Firstly, the importance of a systematic approach to problem-solving in software development became evident. It's not just about finding a solution but understanding the problem deeply. Secondly, effective communication with mentors and tutors is key. Reflecting on my interactions, I realize that asking more targeted questions and perhaps seeking diverse perspectives could have led to quicker resolutions.
+
+Additionally, this experience underscored the importance of time management and prioritization in project development. Balancing the troubleshooting of technical issues with documentation and other project components is crucial. In hindsight, a different approach to prioritizing tasks might have yielded a more balanced outcome.
+
+Overall, while the journey was fraught with challenges, the skills and insights I gained are invaluable. They have not only equipped me to handle similar situations in the future but have also honed my approach to project management and problem-solving in the field of software development.

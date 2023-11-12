@@ -26,7 +26,7 @@ class Post(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    summary = models.TextField(max_length=250)
+    summary = models.TextField(max_length=250, blank=True)
     title = models.CharField(max_length=255)
     content = models.TextField(blank=True)
     image = models.ImageField(
