@@ -2,6 +2,8 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.response import Response
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from dj_rest_auth.registration.views import RegisterView
 from rest_framework.permissions import AllowAny
 from .settings import (
     JWT_AUTH_COOKIE, JWT_AUTH_REFRESH_COOKIE, JWT_AUTH_SAMESITE,
@@ -47,3 +49,8 @@ def logout_route(request):
 @api_view()
 def csrf_token(request):
     return Response({ "csrfToken": get_token(request) })
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class CsrfExemptRegisterView(RegisterView):
+    pass

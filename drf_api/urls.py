@@ -15,9 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
-from .views import root_route, logout_route, csrf_token
-from dj_rest_auth.registration.views import RegisterView
-from django.views.decorators.csrf import csrf_exempt
+from .views import root_route, logout_route, csrf_token, CsrfExemptRegisterView
 
 urlpatterns = [
     path('', root_route),
@@ -27,11 +25,7 @@ urlpatterns = [
     path('dj-rest-auth/logout/', logout_route),
     path('dj-rest-auth/csrf/', csrf_token),
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
-    re_path(
-        r'^dj-rest-auth/registration/$',
-        csrf_exempt(RegisterView.as_view()),
-        name='rest_register',
-    ),
+    path('dj-rest-auth/registration/', CsrfExemptRegisterView.as_view(), name='rest_register'),
     path('', include('profiles.urls')),
     path('', include('posts.urls')),
     path('', include('comments.urls')),
