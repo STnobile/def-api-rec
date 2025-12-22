@@ -14,8 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from .views import root_route, logout_route, csrf_token
+from dj_rest_auth.registration.views import RegisterView
+from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
     path('', root_route),
@@ -25,8 +27,10 @@ urlpatterns = [
     path('dj-rest-auth/logout/', logout_route),
     path('dj-rest-auth/csrf/', csrf_token),
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
-     path(
-        'dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')
+    re_path(
+        r'^dj-rest-auth/registration/$',
+        csrf_exempt(RegisterView.as_view()),
+        name='rest_register',
     ),
     path('', include('profiles.urls')),
     path('', include('posts.urls')),
