@@ -34,7 +34,10 @@ class Booking(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Booking by {self.owner.username} for {self.section} on {self.date} at {self.time_slot}"
+        return (
+            f"Booking by {self.owner.username} for {self.tour_section} "
+            f"on {self.date} at {self.time_slot}"
+        )
 
     def get_current_capacity(self):
         total_num_of_people = Booking.objects.filter(

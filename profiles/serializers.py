@@ -12,7 +12,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     following_count = serializers.ReadOnlyField()
     first_name = serializers.CharField(allow_blank=True, max_length=255)
     last_name = serializers.CharField(allow_blank=True, max_length=250)
-    email = serializers.CharField(allow_blank=True, max_length=255)
+    email = serializers.EmailField(allow_blank=True, max_length=255)
 
     def get_is_owner(self, obj):
         request = self.context['request']

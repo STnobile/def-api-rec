@@ -17,13 +17,20 @@ import dj_database_url
 if os.path.exists('env.py'):
     import env
 
-CLOUDINARY_STORAGE = {
-    'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL'),
- }
-MEDIA_URL = '/media/'
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+USE_CLOUDINARY = 'DEV' not in os.environ and os.environ.get('CLOUDINARY_URL')
+if USE_CLOUDINARY:
+    CLOUDINARY_STORAGE = {
+        'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL'),
+    }
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    MEDIA_URL = '/media/'
+else:
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / 'media'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [(
@@ -61,9 +68,12 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = False
 
 ALLOWED_HOSTS = [
-   os.environ.get('ALLOWED_HOST'),
-   'localhost',
-   '8000-stnobile-defapirec-lx0zvx51m5g.ws-eu106.gitpod.io',
+   host for host in [
+      os.environ.get('ALLOWED_HOST'),
+      'localhost',
+      '127.0.0.1',
+      '8000-stnobile-defapirec-lx0zvx51m5g.ws-eu106.gitpod.io',
+   ] if host
 ]
 
 
@@ -121,6 +131,17 @@ if 'CLIENT_ORIGIN_DEV' in os.environ:
     CORS_ALLOWED_ORIGIN_REGEXES = [
         rf"{extracted_url}(eu|us)\d+\w\.gitpod\.io$",
     ]
+if 'DEV' in os.environ:
+    CORS_ALLOWED_ORIGINS = list({
+        *globals().get('CORS_ALLOWED_ORIGINS', []),
+        'http://localhost:3000',
+        'http://127.0.0.1:3000',
+    })
+    CSRF_TRUSTED_ORIGINS = list({
+        *globals().get('CSRF_TRUSTED_ORIGINS', []),
+        'http://localhost:3000',
+        'http://127.0.0.1:3000',
+    })
 
 CORS_ALLOW_CREDENTIALS = True
 

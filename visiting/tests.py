@@ -31,7 +31,6 @@ class BookingViewTest(APITestCase):
     def test_get_booking_list(self):
        url = reverse('visiting-list-create')
        response = self.client.get(url, format='json')
-       print(response.data)  # Add this line to print the response data
        self.assertEqual(response.status_code, status.HTTP_200_OK)
        self.assertEqual(len(response.data['results']), 1)
 

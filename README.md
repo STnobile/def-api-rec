@@ -78,6 +78,21 @@ def-api-rec is a RESTful API designed to facilitate user interactions within a s
 To install the necessary packages, run:
  requirements.txt
 
+## Local Development
+
+From the project root:
+
+```bash
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+DEV=1 SECRET_KEY=devkey .venv/bin/python manage.py migrate
+DEV=1 SECRET_KEY=devkey .venv/bin/python manage.py runserver
+```
+
+Notes:
+- `DEV=1` uses local file storage and allows `http://localhost:3000` for frontend auth.
+- For production, set `CLOUDINARY_URL` and your database env vars.
+
 
 ## Models and CRUD breakdown
 | model     | endpoints                    | create        | retrieve | update | delete | filter                   | text search |

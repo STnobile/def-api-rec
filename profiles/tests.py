@@ -17,8 +17,6 @@ class ProfileListViewTest(TestCase):
     def test_list_profiles(self):
         url = reverse('profiles-list')  # Adjust this to match your actual URL name
         response = self.client.get(url)
-        print("Response data:", response.data)  # This will print the response data in your test output
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data['results']), 2, msg=f"Expected 2 profiles, found {len(response.data['results'])}: {response.data}")
-
 
