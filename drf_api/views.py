@@ -1,6 +1,7 @@
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
 from django.middleware.csrf import get_token
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.permissions import AllowAny
 from .settings import (
     JWT_AUTH_COOKIE, JWT_AUTH_REFRESH_COOKIE, JWT_AUTH_SAMESITE,
@@ -16,6 +17,7 @@ def root_route(request):
 
 
 
+@csrf_exempt
 @api_view(['POST'])
 @authentication_classes([])
 @permission_classes([AllowAny])
