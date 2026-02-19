@@ -13,7 +13,7 @@ class Profile(models.Model):
     content = models.TextField(blank=True, max_length=255)
     image = models.ImageField(
         upload_to='images/',
-        default='../default_prof_wfmwmp', 
+        default='images/GF.png',
         blank=True
     )
     email = models.EmailField(max_length=255, blank=True)

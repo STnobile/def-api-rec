@@ -8,7 +8,7 @@ from .serializers import CommentSerializer, CommentDetailSerializer
 class CommentList(generics.ListCreateAPIView):
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.select_related('owner', 'owner__profile', 'post')
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['post']
 
@@ -19,4 +19,4 @@ class CommentList(generics.ListCreateAPIView):
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsOwnerOrReadOnly]
     serializer_class = CommentDetailSerializer
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.select_related('owner', 'owner__profile', 'post')
