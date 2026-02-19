@@ -30,6 +30,9 @@ class PostSerializer(serializers.ModelSerializer):
         return request.user == obj.owner
 
     def get_like_id(self, obj):
+        annotated_like_id = getattr(obj, 'like_id', None)
+        if annotated_like_id is not None:
+            return annotated_like_id
         user = self.context['request'].user
         if user.is_authenticated:
             like = Like.objects.filter(

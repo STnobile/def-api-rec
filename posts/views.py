@@ -1,9 +1,10 @@
-from django.db.models import Count
+from django.db.models import Count, OuterRef, Subquery
 from rest_framework import generics, permissions, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_api.permissions import IsOwnerOrReadOnly
 from .models import Post
 from .serializers import PostSerializer
+from likes.models import Like
 
 
 class PostList(generics.ListCreateAPIView):
@@ -13,10 +14,20 @@ class PostList(generics.ListCreateAPIView):
     """
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    queryset = Post.objects.annotate(
-        likes_count=Count('likes', distinct=True),
-        comments_count=Count('comment', distinct=True)
-    ).order_by('-created_at')
+    def get_queryset(self):
+        queryset = Post.objects.annotate(
+            likes_count=Count('likes', distinct=True),
+            comments_count=Count('comment', distinct=True),
+        ).select_related('owner', 'owner__profile').order_by('-created_at')
+        user = self.request.user
+        if user.is_authenticated:
+            queryset = queryset.annotate(
+                like_id=Subquery(
+                    Like.objects.filter(owner=user, post=OuterRef('pk'))
+                    .values('id')[:1]
+                )
+            )
+        return queryset
 
     filter_backends = [
         filters.OrderingFilter,
@@ -54,7 +65,17 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     serializer_class = PostSerializer
     permission_classes = [IsOwnerOrReadOnly]
-    queryset = Post.objects.annotate(
-        likes_count=Count('likes', distinct=True),
-        comments_count=Count('comment', distinct=True)
-    ).order_by('-created_at')
+    def get_queryset(self):
+        queryset = Post.objects.annotate(
+            likes_count=Count('likes', distinct=True),
+            comments_count=Count('comment', distinct=True),
+        ).select_related('owner', 'owner__profile').order_by('-created_at')
+        user = self.request.user
+        if user.is_authenticated:
+            queryset = queryset.annotate(
+                like_id=Subquery(
+                    Like.objects.filter(owner=user, post=OuterRef('pk'))
+                    .values('id')[:1]
+                )
+            )
+        return queryset

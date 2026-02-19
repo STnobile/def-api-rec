@@ -19,6 +19,9 @@ class ProfileSerializer(serializers.ModelSerializer):
         return request.user == obj.owner
 
     def get_following_id(self, obj):
+        annotated_following_id = getattr(obj, 'following_id', None)
+        if annotated_following_id is not None:
+            return annotated_following_id
         user = self.context['request'].user
         if user.is_authenticated:
             following = Follower.objects.filter(
