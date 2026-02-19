@@ -20,6 +20,11 @@ if os.path.exists('env.py'):
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+def parse_csv_env(var_name):
+    value = os.environ.get(var_name, '')
+    return [item.strip() for item in value.split(',') if item.strip()]
+
 USE_CLOUDINARY = 'DEV' not in os.environ and os.environ.get('CLOUDINARY_URL')
 if USE_CLOUDINARY:
     CLOUDINARY_STORAGE = {
@@ -33,11 +38,14 @@ else:
     MEDIA_ROOT = BASE_DIR / 'media'
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [(
-        'rest_framework.authentication.SessionAuthentication'
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        [
+            'rest_framework.authentication.SessionAuthentication',
+            'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        ]
         if 'DEV' in os.environ
-        else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
-    )],
+        else ['dj_rest_auth.jwt_auth.JWTCookieAuthentication']
+    ),
     'DEFAULT_PAGINATION_CLASS':
         'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
@@ -65,7 +73,7 @@ REST_AUTH_SERIALIZERS = {
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = 'DEV' in os.environ
 
 ALLOWED_HOSTS = [
    host for host in [
@@ -110,6 +118,9 @@ INSTALLED_APPS = [
     'visiting',
     
 ]
+
+if 'DEV' in os.environ:
+    INSTALLED_APPS += ['debug_toolbar']
 SITE_ID = 1
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -122,10 +133,22 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-if 'CLIENT_ORIGIN' in os.environ:
-     CORS_ALLOWED_ORIGINS = [
-         os.environ.get('CLIENT_ORIGIN')
-    ]
+if 'DEV' in os.environ:
+    MIDDLEWARE.insert(4, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+
+configured_client_origins = [
+    *parse_csv_env('CLIENT_ORIGINS'),
+    *([os.environ.get('CLIENT_ORIGIN')] if os.environ.get('CLIENT_ORIGIN') else []),
+]
+if configured_client_origins:
+    CORS_ALLOWED_ORIGINS = list({
+        *globals().get('CORS_ALLOWED_ORIGINS', []),
+        *configured_client_origins,
+    })
+    CSRF_TRUSTED_ORIGINS = list({
+        *globals().get('CSRF_TRUSTED_ORIGINS', []),
+        *configured_client_origins,
+    })
 if 'CLIENT_ORIGIN_DEV' in os.environ:
     extracted_url = re.match(r'^.+-', os.environ.get('CLIENT_ORIGIN_DEV', ''), re.IGNORECASE).group(0)
     CORS_ALLOWED_ORIGIN_REGEXES = [
@@ -144,6 +167,12 @@ if 'DEV' in os.environ:
     })
 
 CORS_ALLOW_CREDENTIALS = True
+
+if 'DEV' in os.environ:
+    INTERNAL_IPS = [
+        '127.0.0.1',
+        'localhost',
+    ]
 
 
 ROOT_URLCONF = 'drf_api.urls'
